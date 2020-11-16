@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace masgk
@@ -7,13 +8,20 @@ namespace masgk
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Creating a color buffer...\n");
+#if DEBUG
+            var timer = new Stopwatch();
+            timer.Start();
+#endif
             using Buffer buff = new Buffer(300, 300, Color.Aqua);
-            using DepthBuffer depth = new DepthBuffer(300, 300, 1.0f);
+            using DepthBuffer depth = new DepthBuffer(300, 300, -1.0f);
 
             Rasterizer rast = new Rasterizer(buff, depth);
 
             VertexProcessor proc = new VertexProcessor();
+            proc.MultByTrans(new Float3(-1f, 0f, 0f));
+            proc.MultByRot(45f, new Float3(0f, 0f, 1f));
+            proc.MultByScale(new Float3(0.5f, 0.5f, 0.5f));
+            proc.Lt();
 
             rast.Triangle(
                 proc.Tr(new Float3(-0.5f, -0.5f, 0f)),
@@ -31,10 +39,13 @@ namespace masgk
                 proc.Tr(new Float3(0.5f, -0.5f, 0f)),
                 (Float3)Color.Red, (Float3)Color.Blue, (Float3)Color.Green);
 
-            Console.WriteLine("Saving a color buffer...\n");
-            buff.Save("newbuffer");
-            Console.WriteLine("Saving a depth buffer...\n");
-            depth.Save("newdepth");
+            buff.Save("buffer");
+            depth.Save("depth");
+
+#if DEBUG
+            timer.Stop();
+            Console.WriteLine($"Time: {timer.Elapsed.TotalMilliseconds} ms");
+#endif
         }
     }
 }

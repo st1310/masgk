@@ -69,7 +69,7 @@ namespace masgk
 
                         float depth = l1 * v1.Z + l2 * v2.Z + l3 * v3.Z;
 
-                        if (depth < depthBuff.GetDepth(x, y))
+                        if (depth > depthBuff.GetDepth(x, y))
                         {
                             Float3 col = c1 * l1 + c2 * l2 + c3 * l3;
                             buff.SetPixel(x, y, (Color)col);

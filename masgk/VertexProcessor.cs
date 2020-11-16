@@ -14,7 +14,7 @@ namespace masgk
 
         public VertexProcessor()
         {
-            SetPerspective(90f, 1.0f, 0.1f, 1000.0f);
+            SetPerspective(45f, 1.0f, 0.1f, 1000.0f);
 
             Float3 eye = new Float3(0f, 0f, 3f);  // camera position
             Float3 center = new Float3(0, 0, 0); // target position
@@ -29,6 +29,11 @@ namespace masgk
             Float4 u = obj2proj * new Float4(v, 1f);
 
             return new Float3(u.X, u.Y, u.Z) / u.W;
+        }
+
+        public void Lt()
+        {
+            obj2proj = view2proj * world2view * obj2world;
         }
 
         public void SetPerspective(double fovy, float aspect, float near, float far)
@@ -66,17 +71,36 @@ namespace masgk
 
         public void MultByTrans(Float3 v)
         {
+            Float4x4 m = new Float4x4();
+            m[3] = new Float4(v, 1f);
+            m = m.Transpose;
 
+            obj2world = m * obj2world;
         }
 
         public void MultByScale(Float3 v)
         {
+            Float4x4 m = new Float4x4();
+            m[0] = new Float4(v.X, 0f, 0f, 0f);
+            m[1] = new Float4(0f, v.Y, 0f, 0f);
+            m[2] = new Float4(0f, 0f, v.Z, 0f);
 
+            obj2world = m * obj2world;
         }
 
-        public void MultByRot(Float3 v)
+        public void MultByRot(double a, Float3 v)
         {
+            float s = (float)Math.Sin(a * (Math.PI / 180));
+            float c = (float)Math.Cos(a * (Math.PI / 180));
+            v = v.Normalize;
 
+            Float4x4 m = new Float4x4();
+            m[0] = new Float4(v.X * v.X * (1 - c) + c,       v.Y * v.X * (1 - c) + v.Z * s, v.X * v.Z * (1 - c) - v.Y * s, 0);
+            m[1] = new Float4(v.X * v.Y * (1 - c) - v.Z * s, v.Y * v.Y * (1 - c) + c,       v.Y * v.Z * (1 - c) + v.X * s, 0);
+            m[2] = new Float4(v.X * v.Z * (1 - c) + v.Y * s, v.Y * v.Z * (1 - c) - v.X * s, v.Z * v.Z * (1 - c) + c,       0);
+            m = m.Transpose;
+
+            obj2world = m * obj2world;
         }
     }
 }
