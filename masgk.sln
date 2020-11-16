@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "masgk", "masgk\masgk.csproj", "{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1879AAB9-86AE-4553-B573-B48879FC30CB}
+	EndGlobalSection
+EndGlobal
