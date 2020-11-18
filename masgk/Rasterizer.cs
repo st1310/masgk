@@ -79,7 +79,7 @@ namespace masgk
                 }
         }
 
-        public int Min(float a, float b, float c) => (int)Math.Min(a, Math.Min(b, c));
-        public int Max(float a, float b, float c) => (int)Math.Max(a, Math.Max(b, c));
+        public static int Min(float a, float b, float c) => (int)Math.Min(a, Math.Min(b, c));
+        public static int Max(float a, float b, float c) => (int)Math.Max(a, Math.Max(b, c));
     }
 }
