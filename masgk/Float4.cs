@@ -4,17 +4,12 @@ using System.Text;
 
 namespace masgk
 {
-    public class Float4
+    public struct Float4
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-        public float W { get; set; }
-
-        public Float4()
-        {
-            X = Y = Z = W = 0.0f;
-        }
+        public float X;
+        public float Y;
+        public float Z;
+        public float W;
 
         public Float4(float x, float y, float z, float w)
         {
@@ -38,10 +33,10 @@ namespace masgk
         public static Float4 operator *(Float4x4 a, Float4 b) =>
             new Float4
             {
-                X = a[0, 0] * b.X + a[0, 1] * b.Y + a[0, 2] * b.Z + a[0, 3] * b.W,
-                Y = a[1, 0] * b.X + a[1, 1] * b.Y + a[1, 2] * b.Z + a[1, 3] * b.W,
-                Z = a[2, 0] * b.X + a[2, 1] * b.Y + a[2, 2] * b.Z + a[2, 3] * b.W,
-                W = a[3, 0] * b.X + a[3, 1] * b.Y + a[3, 2] * b.Z + a[3, 3] * b.W
+                X = a.M11 * b.X + a.M12 * b.Y + a.M13 * b.Z + a.M14 * b.W,
+                Y = a.M21 * b.X + a.M22 * b.Y + a.M23 * b.Z + a.M24 * b.W,
+                Z = a.M31 * b.X + a.M32 * b.Y + a.M33 * b.Z + a.M34 * b.W,
+                W = a.M41 * b.X + a.M42 * b.Y + a.M43 * b.Z + a.M44 * b.W
             };
 
         public float Dot(Float4 v) => X * v.X + Y * v.Y + Z * v.Z + W * v.W;

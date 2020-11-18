@@ -6,11 +6,11 @@ namespace masgk
 {
     public class VertexProcessor
     {
-        public Float4x4 obj2world { get; set; } = new Float4x4();
-        public Float4x4 world2view { get; set; } = new Float4x4();
-        public Float4x4 view2proj { get; set; } = new Float4x4();
+        public Float4x4 obj2world = Float4x4.Identity;
+        public Float4x4 world2view = Float4x4.Identity;
+        public Float4x4 view2proj = Float4x4.Identity;
 
-        public Float4x4 obj2proj { get; set; } = new Float4x4();
+        public Float4x4 obj2proj = Float4x4.Identity;
 
         public VertexProcessor()
         {
@@ -46,7 +46,7 @@ namespace masgk
             view2proj[2] = new Float4(0f, 0f, (far + near) / (near - far), -1f);
             view2proj[3] = new Float4(0f, 0f, (2 * far * near) / (near - far), 0f);
 
-            view2proj = view2proj.Transpose;
+            view2proj = Float4x4.Transpose(view2proj);
         }
 
         public void SetLookAt(Float3 eye, Float3 center, Float3 up)
@@ -62,25 +62,25 @@ namespace masgk
             world2view[2] = new Float4(s.Z, u.Z, -f.Z, 0);
             world2view[3] = new Float4(0, 0, 0, 1);
 
-            Float4x4 m = new Float4x4();
+            Float4x4 m = Float4x4.Identity;
             m[3] = new Float4(-eye, 1f);
             world2view *= m;
 
-            world2view = world2view.Transpose;
+            world2view = Float4x4.Transpose(world2view);
         }
 
         public void MultByTrans(Float3 v)
         {
-            Float4x4 m = new Float4x4();
+            Float4x4 m = Float4x4.Identity;
             m[3] = new Float4(v, 1f);
-            m = m.Transpose;
+            m = Float4x4.Transpose(m);
 
             obj2world = m * obj2world;
         }
 
         public void MultByScale(Float3 v)
         {
-            Float4x4 m = new Float4x4();
+            Float4x4 m = Float4x4.Identity;
             m[0] = new Float4(v.X, 0f, 0f, 0f);
             m[1] = new Float4(0f, v.Y, 0f, 0f);
             m[2] = new Float4(0f, 0f, v.Z, 0f);
@@ -94,11 +94,11 @@ namespace masgk
             float c = (float)Math.Cos(a * (Math.PI / 180));
             v = v.Normalize;
 
-            Float4x4 m = new Float4x4();
+            Float4x4 m = Float4x4.Identity;
             m[0] = new Float4(v.X * v.X * (1 - c) + c,       v.Y * v.X * (1 - c) + v.Z * s, v.X * v.Z * (1 - c) - v.Y * s, 0);
             m[1] = new Float4(v.X * v.Y * (1 - c) - v.Z * s, v.Y * v.Y * (1 - c) + c,       v.Y * v.Z * (1 - c) + v.X * s, 0);
             m[2] = new Float4(v.X * v.Z * (1 - c) + v.Y * s, v.Y * v.Z * (1 - c) - v.X * s, v.Z * v.Z * (1 - c) + c,       0);
-            m = m.Transpose;
+            m = Float4x4.Transpose(m);
 
             obj2world = m * obj2world;
         }

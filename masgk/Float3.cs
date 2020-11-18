@@ -5,16 +5,11 @@ using System.Text;
 
 namespace masgk
 {
-    public class Float3
+    public struct Float3
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-
-        public Float3()
-        {
-            X = Y = Z = 0.0f;
-        }
+        public float X;
+        public float Y;
+        public float Z;
 
         public Float3(float x, float y, float z)
         {
