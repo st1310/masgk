@@ -15,8 +15,14 @@ namespace masgk
 
         protected GCHandle bitsHandle;
 
+        public readonly int width;
+        public readonly int height;
+
         public DepthBuffer(int x, int y, float col)
         {
+            width = x;
+            height = y;
+
             bitsBuffer = new UInt32[x * y];
             bitsFloatBuffer = new float[x * y];
             bitsHandle = GCHandle.Alloc(bitsBuffer, GCHandleType.Pinned);
@@ -26,7 +32,7 @@ namespace masgk
 
         public void SetDepth(int x, int y, float col)
         {
-            int index = x + (y * depthBuffer.Width);
+            int index = x + (y * width);
 
             bitsFloatBuffer[index] = col;
             bitsBuffer[index] = (UInt32)(0xff000000 | ((byte)(col * 255f) << 16));
@@ -34,15 +40,15 @@ namespace masgk
 
         public float GetDepth(int x, int y)
         {
-            int index = x + (y * depthBuffer.Width);
+            int index = x + (y * width);
 
             return bitsFloatBuffer[index];
         }
 
         public void Clear(float col)
         {
-            for (int i = 0; i < depthBuffer.Width; i++)
-                for (int j = 0; j < depthBuffer.Height; j++)
+            for (int i = 0; i < width; i++)
+                for (int j = 0; j < height; j++)
                 {
                     SetDepth(i, j, col);
                 }

@@ -7,8 +7,8 @@ namespace masgk
 {
     public class Rasterizer
     {
-        Buffer buff;
-        DepthBuffer depthBuff;
+        readonly Buffer buff;
+        readonly DepthBuffer depthBuff;
 
         public Rasterizer(Buffer buff, DepthBuffer depthBuff)
         {
@@ -18,12 +18,12 @@ namespace masgk
 
         public void Triangle(Float3 v1, Float3 v2, Float3 v3, Float3 c1, Float3 c2, Float3 c3)
         {
-            float x1 = (v1.X + 1) * buff.colorBuffer.Width * .5f;
-            float y1 = (v1.Y + 1) * buff.colorBuffer.Height * .5f;
-            float x2 = (v2.X + 1) * buff.colorBuffer.Width * .5f;
-            float y2 = (v2.Y + 1) * buff.colorBuffer.Height * .5f;
-            float x3 = (v3.X + 1) * buff.colorBuffer.Width * .5f;
-            float y3 = (v3.Y + 1) * buff.colorBuffer.Height * .5f;
+            float x1 = (v1.X + 1) * buff.width * .5f;
+            float y1 = (v1.Y + 1) * buff.height * .5f;
+            float x2 = (v2.X + 1) * buff.width * .5f;
+            float y2 = (v2.Y + 1) * buff.height * .5f;
+            float x3 = (v3.X + 1) * buff.width * .5f;
+            float y3 = (v3.Y + 1) * buff.height * .5f;
 
             int minx = Min(x1, x2, x3);
             int miny = Min(y1, y2, y3);
@@ -31,9 +31,9 @@ namespace masgk
             int maxy = Max(y1, y2, y3);
 
             minx = Math.Max(minx, 0);
-            maxx = Math.Min(maxx, buff.colorBuffer.Width - 1);
+            maxx = Math.Min(maxx, buff.width - 1);
             miny = Math.Max(miny, 0);
-            maxy = Math.Min(maxy, buff.colorBuffer.Height - 1);
+            maxy = Math.Min(maxy, buff.height - 1);
 
             float dy12 = y1 - y2;
             float dy23 = y2 - y3;

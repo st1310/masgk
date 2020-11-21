@@ -14,8 +14,14 @@ namespace masgk
 
         protected GCHandle bitsHandle;
 
+        public readonly int width;
+        public readonly int height;
+
         public Buffer(int x, int y, Color col)
         {
+            width = x;
+            height = y;
+
             bitsBuffer = new int[x * y];
             bitsHandle = GCHandle.Alloc(bitsBuffer, GCHandleType.Pinned);
             colorBuffer = new Bitmap(x, y, x * 4, PixelFormat.Format32bppPArgb, bitsHandle.AddrOfPinnedObject());
@@ -24,7 +30,7 @@ namespace masgk
 
         public void SetPixel(int x, int y, Color col)
         {
-            int index = x + (y * colorBuffer.Width);
+            int index = x + (y * width);
             int c = col.ToArgb();
 
             bitsBuffer[index] = c;
@@ -32,8 +38,8 @@ namespace masgk
 
         public void Clear(Color col)
         {
-            for (int i = 0; i < colorBuffer.Width; i++)
-                for (int j = 0; j < colorBuffer.Height; j++)
+            for (int i = 0; i < width; i++)
+                for (int j = 0; j < height; j++)
                     {
                         SetPixel(i, j, col);
                     }
