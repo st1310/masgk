@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace masgk
 {
@@ -13,30 +14,35 @@ namespace masgk
             var timer3 = new Stopwatch();
 
             timer1.Start();
-            using Buffer buff = new Buffer(300, 300, Color.Aqua);
-            using DepthBuffer depth = new DepthBuffer(300, 300, 1.0f);
+            using Buffer buff = new Buffer(600, 600, Color.Aqua);
+            using DepthBuffer depth = new DepthBuffer(600, 600, 1.0f);
 
             Rasterizer rast = new Rasterizer(buff, depth);
             timer1.Stop();
 
             VertexProcessor proc = new VertexProcessor();
+
+            Cube cube = new(1.0f);
+            cube.Generate();
+
             timer2.Start();
             proc.MultByScale(new Float3(0.5f, 0.5f, 0.5f));
             proc.MultByRot(45f, new Float3(1f, 0f, 0f));
-            proc.MultByTrans(new Float3(-0.5f, 0f, -5.0f));
+            proc.MultByTrans(new Float3(-0.5f, 0f, -1.0f));
             proc.Lt();
 
-            PrimHelper.Cube(rast, proc);
+            cube.Draw(ref rast, ref proc);
+            //PrimHelper.Cube(rast, proc);
 
             timer2.Stop();
             VertexProcessor proc1 = new VertexProcessor();
             timer2.Start();
             proc1.MultByScale(new Float3(0.5f, 0.5f, 0.5f));
             proc1.MultByRot(0f, new Float3(0f, 1f, 0f));
-            proc1.MultByTrans(new Float3(1.0f, 0f, -5.0f));
+            proc1.MultByTrans(new Float3(1.0f, 0f, -1.0f));
             proc1.Lt();
 
-            PrimHelper.Cube(rast, proc1);
+            //PrimHelper.Cube(rast, proc1);
             timer2.Stop();
 
             timer3.Start();
