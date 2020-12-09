@@ -14,35 +14,67 @@ namespace masgk
             var timer3 = new Stopwatch();
 
             timer1.Start();
-            using Buffer buff = new Buffer(600, 600, Color.Aqua);
-            using DepthBuffer depth = new DepthBuffer(600, 600, 1.0f);
+            using Buffer buff = new(600, 600, Color.Aqua);
+            using DepthBuffer depth = new(600, 600, 1.0f);
 
-            Rasterizer rast = new Rasterizer(buff, depth);
+            Rasterizer rast = new(buff, depth);
             timer1.Stop();
 
-            VertexProcessor proc = new VertexProcessor();
+            VertexProcessor proc = new();
 
             Cube cube = new(1.0f);
             cube.Generate();
 
+            Sphere sphere = new(1.0f, 3);
+            sphere.Generate();
+
+            Torus torus = new();
+            torus.Generate();
+
+            Cylinder cylinder = new();
+            cylinder.Generate();
+
+            Cone cone = new();
+            cone.Generate();
+
             timer2.Start();
-            proc.MultByScale(new Float3(0.5f, 0.5f, 0.5f));
-            proc.MultByRot(45f, new Float3(1f, 0f, 0f));
-            proc.MultByTrans(new Float3(-0.5f, 0f, -1.0f));
+            proc.MultByScale(new(0.5f, 0.5f, 0.5f));
+            proc.MultByRot(45f, new(0f, 1f, 0f));
+            proc.MultByTrans(new(-0.5f, -1.0f, -1.0f));
             proc.Lt();
 
-            cube.Draw(ref rast, ref proc);
-            //PrimHelper.Cube(rast, proc);
-
+            //cube.Draw(ref rast, ref proc);
+            torus.Draw(ref rast, ref proc);
             timer2.Stop();
-            VertexProcessor proc1 = new VertexProcessor();
+
+            VertexProcessor proc1 = new();
             timer2.Start();
-            proc1.MultByScale(new Float3(0.5f, 0.5f, 0.5f));
-            proc1.MultByRot(0f, new Float3(0f, 1f, 0f));
-            proc1.MultByTrans(new Float3(1.0f, 0f, -1.0f));
+            proc1.MultByScale(new(0.5f, 0.5f, 0.5f));
+            proc1.MultByRot(0f, new(0f, 1f, 0f));
+            proc1.MultByTrans(new(1.0f, -1.0f, -1.0f));
             proc1.Lt();
 
-            //PrimHelper.Cube(rast, proc1);
+            sphere.Draw(ref rast, ref proc1);
+            timer2.Stop();
+
+            VertexProcessor proc2 = new();
+            timer2.Start();
+            proc2.MultByScale(new(0.5f, 0.5f, 0.5f));
+            proc2.MultByRot(0f, new(0f, 1f, 0f));
+            proc2.MultByTrans(new(1.0f, 1.0f, -1.0f));
+            proc2.Lt();
+
+            cylinder.Draw(ref rast, ref proc2);
+            timer2.Stop();
+
+            VertexProcessor proc3 = new();
+            timer2.Start();
+            proc3.MultByScale(new(0.5f, 0.5f, 0.5f));
+            proc3.MultByRot(0f, new(0f, 1f, 0f));
+            proc3.MultByTrans(new(-0.5f, 1.0f, -1.0f));
+            proc3.Lt();
+
+            cone.Draw(ref rast, ref proc3);
             timer2.Stop();
 
             timer3.Start();

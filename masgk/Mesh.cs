@@ -30,7 +30,7 @@ namespace masgk
                 proc.Tr(Positions[Indices[i]]),
                 proc.Tr(Positions[Indices[i + 1]]),
                 proc.Tr(Positions[Indices[i + 2]]),
-                (Float3)Color.Red, (Float3)Color.Red, (Float3)Color.Red);
+                (Float3)Color.Coral, (Float3)Color.Bisque, (Float3)Color.DarkCyan);
             }
         }
     }
