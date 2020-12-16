@@ -10,6 +10,7 @@ namespace masgk
         public Float4x4 world2view = Float4x4.Identity;
         public Float4x4 view2proj = Float4x4.Identity;
 
+        public Float4x4 obj2view = Float4x4.Identity;
         public Float4x4 obj2proj = Float4x4.Identity;
 
         public VertexProcessor()
@@ -31,8 +32,23 @@ namespace masgk
             return new Float3(u.X, u.Y, u.Z) / u.W;
         }
 
+        public Float3 Tr_obj2view4(Float3 v)
+        {
+            Float4 u = obj2view * new Float4(v, 0f);
+
+            return new Float3(u.X, u.Y, u.Z) / u.W;
+        }
+
+        public Float3 Tr_obj2view3(Float3 v)
+        {
+            Float4 u = obj2view * new Float4(v, 0f); //! Float4x4 * Float3
+
+            return new Float3(u.X, u.Y, u.Z);
+        }
+
         public void Lt()
         {
+            obj2view = world2view * obj2world;
             obj2proj = view2proj * world2view * obj2world;
         }
 

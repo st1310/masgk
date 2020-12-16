@@ -23,6 +23,8 @@ namespace masgk
         public static Float3 operator -(Float3 a) => new Float3(-a.X, -a.Y, -a.Z);
         public static Float3 operator +(Float3 a, Float3 b) => new Float3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         public static Float3 operator -(Float3 a, Float3 b) => a + (-b);
+        public static Float3 operator +(Float3 a, float b) => new Float3(a.X + b, a.Y + b, a.Z + b);
+        public static Float3 operator -(Float3 a, float b) => a + (-b);
         public static Float3 operator *(Float3 a, float b) => new Float3(a.X * b, a.Y * b, a.Z * b);
         public static Float3 operator /(Float3 a, float b) => b == 0 ? throw new DivideByZeroException() : new Float3(a.X / b, a.Y / b, a.Z / b);
 
@@ -40,5 +42,12 @@ namespace masgk
         public float Dot(Float3 v) => X * v.X + Y * v.Y + Z * v.Z;
         public float Length => (float)Math.Sqrt(Dot(this));
         public Float3 Normalize => this / Length;
+
+        public static Float3 Reflect(Float3 I, Float3 N)
+        {
+            Float3 Nn = N.Normalize;
+
+            return I - Nn * Nn.Dot(I) * 2.0f;
+        }
     }
 }

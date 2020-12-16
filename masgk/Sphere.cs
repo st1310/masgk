@@ -26,8 +26,8 @@ namespace masgk
             int horizontalSegments = _tessellationLevel * 2;
 
             // Start with a single vertex at the bottom of the sphere.
-            Positions.Add(new Float3(0.0f, -1.0f, 0.0f) * _radius); // Float3.Down
-			Normals.Add(new Float3(0.0f, -1.0f, 0.0f)); // Float3.Down
+            Positions.Add(new Float3(0.0f, -1.0f, 0.0f) * _radius); //! Float3.Down
+			Normals.Add(new Float3(0.0f, -1.0f, 0.0f)); //! Float3.Down
 
 			// Create rings of vertices at progressively higher latitudes.
 			for (int i = 0; i < verticalSegments - 1; i++)
@@ -53,8 +53,8 @@ namespace masgk
 			}
 
 			// Finish with a single vertex at the top of the sphere.
-			Positions.Add(new Float3(0.0f, 1.0f, 0.0f) * _radius); // Float3.Up
-			Normals.Add(new Float3(0.0f, 1.0f, 0.0f)); // Float3.Up
+			Positions.Add(new Float3(0.0f, 1.0f, 0.0f) * _radius); //! Float3.Up
+			Normals.Add(new Float3(0.0f, 1.0f, 0.0f)); //! Float3.Up
 
 			// Create a fan connecting the bottom vertex to the bottom latitude ring.
 			for (int i = 0; i < horizontalSegments; i++)

@@ -25,13 +25,13 @@ namespace masgk
             Cube cube = new(1.0f);
             cube.Generate();
 
-            Sphere sphere = new(1.0f, 3);
+            Sphere sphere = new(1.0f, 10);
             sphere.Generate();
 
-            Torus torus = new();
+            Torus torus = new(1.0f, 0.4f, 4, 16);
             torus.Generate();
 
-            Cylinder cylinder = new();
+            Cylinder cylinder = new(1.0f, 1.0f, 1.0f, 8, 1);
             cylinder.Generate();
 
             Cone cone = new();
