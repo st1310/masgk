@@ -27,8 +27,8 @@ namespace masgk
 
         public static float Saturate(float value) => Math.Clamp(value, 0.0f, 1.0f); //! move to math helper class
         public static Float3 Saturate(Float3 value) => //! move to math helper class
-            new(Math.Clamp(value.X, 0.0f, 1.0f),
-                Math.Clamp(value.Y, 0.0f, 1.0f),
-                Math.Clamp(value.Z, 0.0f, 1.0f));
+            new(Math.Clamp(value.X, 0.0f, 255.0f),
+                Math.Clamp(value.Y, 0.0f, 255.0f),
+                Math.Clamp(value.Z, 0.0f, 255.0f));
     }
 }

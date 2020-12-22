@@ -25,10 +25,10 @@ namespace masgk
             Cube cube = new(1.0f);
             cube.Generate();
 
-            Sphere sphere = new(1.0f, 10);
+            Sphere sphere = new(1.0f, 30);
             sphere.Generate();
 
-            Torus torus = new(1.0f, 0.4f, 4, 16);
+            Torus torus = new(1.0f, 0.4f, 30, 30);
             torus.Generate();
 
             Cylinder cylinder = new(1.0f, 1.0f, 1.0f, 8, 1);
@@ -37,6 +37,10 @@ namespace masgk
             Cone cone = new();
             cone.Generate();
 
+            VertexProcessor procL = new();
+
+            Light light = new DirectionalLight(new(0.0f, 0.0f, 1.0f), (Float3)Color.Black, (Float3)Color.LightCyan, (Float3)Color.Red, 10f);
+
             timer2.Start();
             proc.MultByScale(new(0.5f, 0.5f, 0.5f));
             proc.MultByRot(45f, new(0f, 1f, 0f));
@@ -44,7 +48,8 @@ namespace masgk
             proc.Lt();
 
             //cube.Draw(ref rast, ref proc);
-            torus.Draw(ref rast, ref proc);
+            //torus.DrawNormals(ref rast, ref proc);
+            torus.Draw(ref rast, ref proc, ref light);
             timer2.Stop();
 
             VertexProcessor proc1 = new();
@@ -54,7 +59,8 @@ namespace masgk
             proc1.MultByTrans(new(1.0f, -1.0f, -1.0f));
             proc1.Lt();
 
-            sphere.Draw(ref rast, ref proc1);
+            //sphere.DrawNormals(ref rast, ref proc1);
+            sphere.Draw(ref rast, ref proc1, ref light);
             timer2.Stop();
 
             VertexProcessor proc2 = new();
@@ -64,7 +70,7 @@ namespace masgk
             proc2.MultByTrans(new(1.0f, 1.0f, -1.0f));
             proc2.Lt();
 
-            cylinder.Draw(ref rast, ref proc2);
+            cylinder.DrawNormals(ref rast, ref proc2);
             timer2.Stop();
 
             VertexProcessor proc3 = new();
@@ -74,7 +80,7 @@ namespace masgk
             proc3.MultByTrans(new(-0.5f, 1.0f, -1.0f));
             proc3.Lt();
 
-            cone.Draw(ref rast, ref proc3);
+            cone.DrawNormals(ref rast, ref proc3);
             timer2.Stop();
 
             timer3.Start();

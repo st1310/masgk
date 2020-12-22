@@ -47,5 +47,19 @@ namespace masgk
                 light.Calculate(Positions[Indices[i + 2]], Normals[Indices[i + 2]], ref proc));
             }
         }
+
+        public void DrawNormals(ref Rasterizer rast, ref VertexProcessor proc)
+        {
+            for (int i = 0; i < Indices.Count; i += 3) //! make Indices.Count a variable
+            {
+                rast.Triangle(
+                proc.Tr(Positions[Indices[i]]),
+                proc.Tr(Positions[Indices[i + 1]]),
+                proc.Tr(Positions[Indices[i + 2]]),
+                Light.Saturate(proc.Tr_obj2view3((Normals[Indices[i]] + 1f) / 2f).Normalize * 255f),
+                Light.Saturate(proc.Tr_obj2view3((Normals[Indices[i + 1]] + 1f) / 2f).Normalize * 255f),
+                Light.Saturate(proc.Tr_obj2view3((Normals[Indices[i + 2]] + 1f) / 2f).Normalize * 255f));
+            }
+        }
     }
 }
