@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace masgk
+namespace SseMath
 {
     public struct Float4x4
     {
@@ -110,7 +112,7 @@ namespace masgk
 
         public float this[int i, int j]
         {
-            get 
+            get
             {
                 return (i * 4 + j) switch
                 {
@@ -134,7 +136,7 @@ namespace masgk
                 };
             }
 
-            set 
+            set
             {
                 switch (i * 4 + j)
                 {
@@ -162,62 +164,34 @@ namespace masgk
 
         public static unsafe Float4x4 operator *(Float4x4 rhs1, Float4x4 rhs2)
         {
-            //Vector128<float> row = Sse.LoadVector128(&rhs1.M11);
-            //Sse.Store(&rhs1.M11,
-            //    Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
-            //            Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
+            Vector128<float> row = Sse.LoadVector128(&rhs1.M11);
+            Sse.Store(&rhs1.M11,
+                Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
+                        Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
 
-            //row = Sse.LoadVector128(&rhs1.M21);
-            //Sse.Store(&rhs1.M21,
-            //    Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
-            //            Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
+            row = Sse.LoadVector128(&rhs1.M21);
+            Sse.Store(&rhs1.M21,
+                Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
+                        Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
 
-            //row = Sse.LoadVector128(&rhs1.M31);
-            //Sse.Store(&rhs1.M31,
-            //    Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
-            //            Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
+            row = Sse.LoadVector128(&rhs1.M31);
+            Sse.Store(&rhs1.M31,
+                Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
+                        Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
 
-            //row = Sse.LoadVector128(&rhs1.M41);
-            //Sse.Store(&rhs1.M41,
-            //    Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
-            //            Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
-            //                    Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
-            //return rhs1;
-
-            Float4x4 m;
-
-            // First row
-            m.M11 = rhs1.M11 * rhs2.M11 + rhs1.M12 * rhs2.M21 + rhs1.M13 * rhs2.M31 + rhs1.M14 * rhs2.M41;
-            m.M12 = rhs1.M11 * rhs2.M12 + rhs1.M12 * rhs2.M22 + rhs1.M13 * rhs2.M32 + rhs1.M14 * rhs2.M42;
-            m.M13 = rhs1.M11 * rhs2.M13 + rhs1.M12 * rhs2.M23 + rhs1.M13 * rhs2.M33 + rhs1.M14 * rhs2.M43;
-            m.M14 = rhs1.M11 * rhs2.M14 + rhs1.M12 * rhs2.M24 + rhs1.M13 * rhs2.M34 + rhs1.M14 * rhs2.M44;
-
-            // Second row
-            m.M21 = rhs1.M21 * rhs2.M11 + rhs1.M22 * rhs2.M21 + rhs1.M23 * rhs2.M31 + rhs1.M24 * rhs2.M41;
-            m.M22 = rhs1.M21 * rhs2.M12 + rhs1.M22 * rhs2.M22 + rhs1.M23 * rhs2.M32 + rhs1.M24 * rhs2.M42;
-            m.M23 = rhs1.M21 * rhs2.M13 + rhs1.M22 * rhs2.M23 + rhs1.M23 * rhs2.M33 + rhs1.M24 * rhs2.M43;
-            m.M24 = rhs1.M21 * rhs2.M14 + rhs1.M22 * rhs2.M24 + rhs1.M23 * rhs2.M34 + rhs1.M24 * rhs2.M44;
-
-            // Third row
-            m.M31 = rhs1.M31 * rhs2.M11 + rhs1.M32 * rhs2.M21 + rhs1.M33 * rhs2.M31 + rhs1.M34 * rhs2.M41;
-            m.M32 = rhs1.M31 * rhs2.M12 + rhs1.M32 * rhs2.M22 + rhs1.M33 * rhs2.M32 + rhs1.M34 * rhs2.M42;
-            m.M33 = rhs1.M31 * rhs2.M13 + rhs1.M32 * rhs2.M23 + rhs1.M33 * rhs2.M33 + rhs1.M34 * rhs2.M43;
-            m.M34 = rhs1.M31 * rhs2.M14 + rhs1.M32 * rhs2.M24 + rhs1.M33 * rhs2.M34 + rhs1.M34 * rhs2.M44;
-
-            // Fourth row
-            m.M41 = rhs1.M41 * rhs2.M11 + rhs1.M42 * rhs2.M21 + rhs1.M43 * rhs2.M31 + rhs1.M44 * rhs2.M41;
-            m.M42 = rhs1.M41 * rhs2.M12 + rhs1.M42 * rhs2.M22 + rhs1.M43 * rhs2.M32 + rhs1.M44 * rhs2.M42;
-            m.M43 = rhs1.M41 * rhs2.M13 + rhs1.M42 * rhs2.M23 + rhs1.M43 * rhs2.M33 + rhs1.M44 * rhs2.M43;
-            m.M44 = rhs1.M41 * rhs2.M14 + rhs1.M42 * rhs2.M24 + rhs1.M43 * rhs2.M34 + rhs1.M44 * rhs2.M44;
-
-            return m;
+            row = Sse.LoadVector128(&rhs1.M41);
+            Sse.Store(&rhs1.M41,
+                Sse.Add(Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0x00), Sse.LoadVector128(&rhs2.M11)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0x55), Sse.LoadVector128(&rhs2.M21))),
+                        Sse.Add(Sse.Multiply(Sse.Shuffle(row, row, 0xAA), Sse.LoadVector128(&rhs2.M31)),
+                                Sse.Multiply(Sse.Shuffle(row, row, 0xFF), Sse.LoadVector128(&rhs2.M41)))));
+            return rhs1;
         }
 
         public static unsafe Float4x4 Transpose(Float4x4 matrix)

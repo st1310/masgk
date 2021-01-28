@@ -23,7 +23,7 @@ namespace masgk
             Shininess = shininess;
         }
 
-        public abstract Float3 Calculate(Float3 fragPosition, Float3 fragNormal, ref VertexProcessor proc); //! in
+        public abstract Float3 Calculate(in Float3 fragPosition, in Float3 fragNormal, ref VertexProcessor proc); //! in
 
         public static float Saturate(float value) => Math.Clamp(value, 0.0f, 1.0f); //! move to math helper class
         public static Float3 Saturate(Float3 value) => //! move to math helper class

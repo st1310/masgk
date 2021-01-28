@@ -34,7 +34,7 @@ namespace masgk
             }
         }
 
-        public void Draw(ref Rasterizer rast, ref VertexProcessor proc, ref Light light)
+        public void DrawV(ref Rasterizer rast, ref VertexProcessor proc, ref Light light)
         {
             for (int i = 0; i < Indices.Count; i += 3) //! make Indices.Count a variable
             {
@@ -45,6 +45,22 @@ namespace masgk
                 light.Calculate(Positions[Indices[i]], Normals[Indices[i]], ref proc),
                 light.Calculate(Positions[Indices[i + 1]], Normals[Indices[i + 1]], ref proc),
                 light.Calculate(Positions[Indices[i + 2]], Normals[Indices[i + 2]], ref proc));
+            }
+        }
+
+        public void Draw(ref Rasterizer rast, ref VertexProcessor proc, ref Light light)
+        {
+            for (int i = 0; i < Indices.Count; i += 3) //! make Indices.Count a variable
+            {
+                rast.Triangle(
+                proc.Tr(Positions[Indices[i]]),
+                proc.Tr(Positions[Indices[i + 1]]),
+                proc.Tr(Positions[Indices[i + 2]]),
+                Normals[Indices[i]],
+                Normals[Indices[i + 1]],
+                Normals[Indices[i + 2]],
+                ref light,
+                ref proc);
             }
         }
 
@@ -59,6 +75,40 @@ namespace masgk
                 Light.Saturate(proc.Tr_obj2view3((Normals[Indices[i]] + 1f) / 2f).Normalize * 255f),
                 Light.Saturate(proc.Tr_obj2view3((Normals[Indices[i + 1]] + 1f) / 2f).Normalize * 255f),
                 Light.Saturate(proc.Tr_obj2view3((Normals[Indices[i + 2]] + 1f) / 2f).Normalize * 255f));
+            }
+        }
+
+        public void DrawUV(ref Rasterizer rast, ref VertexProcessor proc)
+        {
+            for (int i = 0; i < Indices.Count; i += 3) //! make Indices.Count a variable
+            {
+                rast.Triangle(
+                proc.Tr(Positions[Indices[i]]),
+                proc.Tr(Positions[Indices[i + 1]]),
+                proc.Tr(Positions[Indices[i + 2]]),
+                Light.Saturate(proc.Tr_obj2view3((TextureCoordinates[Indices[i]])) * 255f),
+                Light.Saturate(proc.Tr_obj2view3((TextureCoordinates[Indices[i + 1]])) * 255f),
+                Light.Saturate(proc.Tr_obj2view3((TextureCoordinates[Indices[i + 2]])) * 255f));
+            }
+        }
+
+        public void DrawUV(ref Rasterizer rast, ref VertexProcessor proc, ref Light light, ref Buffer tex)
+        {
+            for (int i = 0; i < Indices.Count; i += 3) //! make Indices.Count a variable
+            {
+                rast.Triangle(
+                proc.Tr(Positions[Indices[i]]),
+                proc.Tr(Positions[Indices[i + 1]]),
+                proc.Tr(Positions[Indices[i + 2]]),
+                Normals[Indices[i]],
+                Normals[Indices[i + 1]],
+                Normals[Indices[i + 2]],
+                TextureCoordinates[Indices[i]],
+                TextureCoordinates[Indices[i + 1]],
+                TextureCoordinates[Indices[i + 2]],
+                ref light,
+                ref proc,
+                ref tex);
             }
         }
     }

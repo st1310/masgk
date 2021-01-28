@@ -79,7 +79,153 @@ namespace masgk
                 }
         }
 
+        public void Triangle(Float3 v1, Float3 v2, Float3 v3, Float3 n1, Float3 n2, Float3 n3, ref Light light, ref VertexProcessor proc)
+        {
+            float x1 = (v1.X + 1) * buff.width * .5f;
+            float y1 = (v1.Y + 1) * buff.height * .5f;
+            float x2 = (v2.X + 1) * buff.width * .5f;
+            float y2 = (v2.Y + 1) * buff.height * .5f;
+            float x3 = (v3.X + 1) * buff.width * .5f;
+            float y3 = (v3.Y + 1) * buff.height * .5f;
+
+            int minx = Min(x1, x2, x3);
+            int miny = Min(y1, y2, y3);
+            int maxx = Max(x1, x2, x3);
+            int maxy = Max(y1, y2, y3);
+
+            minx = Math.Max(minx, 0);
+            maxx = Math.Min(maxx, buff.width - 1);
+            miny = Math.Max(miny, 0);
+            maxy = Math.Min(maxy, buff.height - 1);
+
+            float dy12 = y1 - y2;
+            float dy23 = y2 - y3;
+            float dy31 = y3 - y1;
+            float dx12 = x1 - x2;
+            float dx23 = x2 - x3;
+            float dx31 = x3 - x1;
+
+            bool tl1 = false;
+            bool tl2 = false;
+            bool tl3 = false;
+
+            if (dy12 < 0 || (dy12 == 0 && dx12 > 0)) tl1 = true;
+            if (dy23 < 0 || (dy23 == 0 && dx23 > 0)) tl2 = true;
+            if (dy31 < 0 || (dy31 == 0 && dx31 > 0)) tl3 = true;
+
+            for (int x = minx; x <= maxx; x++)
+                for (int y = miny; y <= maxy; y++)
+                {
+                    float hs1 = dx12 * (y - y1) - dy12 * (x - x1);
+                    float hs2 = dx23 * (y - y2) - dy23 * (x - x2);
+                    float hs3 = dx31 * (y - y3) - dy31 * (x - x3);
+
+                    if (((hs1 > 0 && !tl1) || (hs1 >= 0 && tl1)) &&
+                        ((hs2 > 0 && !tl2) || (hs2 >= 0 && tl2)) &&
+                        ((hs3 > 0 && !tl3) || (hs3 >= 0 && tl3)))
+                    {
+                        float l1 = (((y2 - y3) * (x - x3)) + ((x3 - x2) * (y - y3))) /
+                                    (((y2 - y3) * (x1 - x3)) + ((x3 - x2) * (y1 - y3)));
+                        float l2 = (((y3 - y1) * (x - x3)) + ((x1 - x3) * (y - y3))) /
+                                    (((y3 - y1) * (x2 - x3)) + ((x1 - x3) * (y2 - y3)));
+                        float l3 = 1 - l1 - l2;
+
+                        float depth = l1 * v1.Z + l2 * v2.Z + l3 * v3.Z;
+
+                        if (depth < depthBuff.GetDepth(x, y))
+                        {
+                            Float3 position = v1 * l1 + v2 * l2 + v3 * l3;
+                            Float3 normal = n1 * l1 + n2 * l2 + n3 * l3;
+                            Float3 col = light.Calculate(in position, in normal, ref proc);
+                            buff.SetPixel(x, y, (Color)col);
+                            depthBuff.SetDepth(x, y, depth);
+                        }
+                    }
+                }
+        }
+
+        public void Triangle(Float3 v1, Float3 v2, Float3 v3, Float3 n1, Float3 n2, Float3 n3, Float3 uv1, Float3 uv2, Float3 uv3, ref Light light, ref VertexProcessor proc, ref Buffer tex)
+        {
+            float x1 = (v1.X + 1) * buff.width * .5f;
+            float y1 = (v1.Y + 1) * buff.height * .5f;
+            float x2 = (v2.X + 1) * buff.width * .5f;
+            float y2 = (v2.Y + 1) * buff.height * .5f;
+            float x3 = (v3.X + 1) * buff.width * .5f;
+            float y3 = (v3.Y + 1) * buff.height * .5f;
+
+            int minx = Min(x1, x2, x3);
+            int miny = Min(y1, y2, y3);
+            int maxx = Max(x1, x2, x3);
+            int maxy = Max(y1, y2, y3);
+
+            minx = Math.Max(minx, 0);
+            maxx = Math.Min(maxx, buff.width - 1);
+            miny = Math.Max(miny, 0);
+            maxy = Math.Min(maxy, buff.height - 1);
+
+            float dy12 = y1 - y2;
+            float dy23 = y2 - y3;
+            float dy31 = y3 - y1;
+            float dx12 = x1 - x2;
+            float dx23 = x2 - x3;
+            float dx31 = x3 - x1;
+
+            bool tl1 = false;
+            bool tl2 = false;
+            bool tl3 = false;
+
+            if (dy12 < 0 || (dy12 == 0 && dx12 > 0)) tl1 = true;
+            if (dy23 < 0 || (dy23 == 0 && dx23 > 0)) tl2 = true;
+            if (dy31 < 0 || (dy31 == 0 && dx31 > 0)) tl3 = true;
+
+            for (int x = minx; x <= maxx; x++)
+                for (int y = miny; y <= maxy; y++)
+                {
+                    float hs1 = dx12 * (y - y1) - dy12 * (x - x1);
+                    float hs2 = dx23 * (y - y2) - dy23 * (x - x2);
+                    float hs3 = dx31 * (y - y3) - dy31 * (x - x3);
+
+                    if (((hs1 > 0 && !tl1) || (hs1 >= 0 && tl1)) &&
+                        ((hs2 > 0 && !tl2) || (hs2 >= 0 && tl2)) &&
+                        ((hs3 > 0 && !tl3) || (hs3 >= 0 && tl3)))
+                    {
+                        float l1 = (((y2 - y3) * (x - x3)) + ((x3 - x2) * (y - y3))) /
+                                    (((y2 - y3) * (x1 - x3)) + ((x3 - x2) * (y1 - y3)));
+                        float l2 = (((y3 - y1) * (x - x3)) + ((x1 - x3) * (y - y3))) /
+                                    (((y3 - y1) * (x2 - x3)) + ((x1 - x3) * (y2 - y3)));
+                        float l3 = 1 - l1 - l2;
+
+                        float depth = l1 * v1.Z + l2 * v2.Z + l3 * v3.Z;
+
+                        if (depth < depthBuff.GetDepth(x, y))
+                        {
+                            Float3 position = v1 * l1 + v2 * l2 + v3 * l3;
+                            Float3 normal = n1 * l1 + n2 * l2 + n3 * l3;
+                            Float3 uv = uv1 * l1 + uv2 * l2 + uv3 * l3;
+
+                            float uvX = Map(uv.X, 0.0f, tex.width);
+                            float uvY = Map(uv.Y, 0.0f, tex.height);
+
+                            Float3 l = (light.Calculate(in position, in normal, ref proc) / 255.0f);
+                            Float3 col = (Float3)tex.GetPixel((int)uvX, (int)uvY) * l;
+                            buff.SetPixel(x, y, (Color)col);
+                            depthBuff.SetDepth(x, y, depth);
+                        }
+                    }
+                }
+        }
+
         public static int Min(float a, float b, float c) => (int)Math.Min(a, Math.Min(b, c));
         public static int Max(float a, float b, float c) => (int)Math.Max(a, Math.Max(b, c));
+
+        public static float Map(float x, float in_min, float in_max, float out_min, float out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+
+        public static float Map(float x, float out_min, float out_max)
+        {
+            return x * (out_max - out_min) + out_min;
+        }
     }
 }

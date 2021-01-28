@@ -25,7 +25,9 @@ namespace masgk
         public static Float3 operator -(Float3 a, Float3 b) => a + (-b);
         public static Float3 operator +(Float3 a, float b) => new Float3(a.X + b, a.Y + b, a.Z + b);
         public static Float3 operator -(Float3 a, float b) => a + (-b);
+        public static Float3 operator *(Float3 a, Float3 b) => new Float3(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
         public static Float3 operator *(Float3 a, float b) => new Float3(a.X * b, a.Y * b, a.Z * b);
+        public static Float3 operator /(Float3 a, Float3 b) => new Float3(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
         public static Float3 operator /(Float3 a, float b) => b == 0 ? throw new DivideByZeroException() : new Float3(a.X / b, a.Y / b, a.Z / b);
 
         // Conversion operators 
@@ -48,6 +50,11 @@ namespace masgk
             Float3 Nn = N.Normalize;
 
             return I - Nn * Nn.Dot(I) * 2.0f;
+        }
+
+        public override string ToString()
+        {
+            return $"[{X}, {Y}, {Z}]";
         }
     }
 }

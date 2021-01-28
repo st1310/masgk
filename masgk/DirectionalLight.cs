@@ -13,7 +13,7 @@ namespace masgk
         {
         }
 
-        public override Float3 Calculate(Float3 fragPosition, Float3 fragNormal, ref VertexProcessor proc)
+        public override Float3 Calculate(in Float3 fragPosition, in Float3 fragNormal, ref VertexProcessor proc)
         {
             Float3 L = Position;
             Float3 N = proc.Tr_obj2view3(fragNormal).Normalize;

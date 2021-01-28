@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "masgk", "masgk\masgk.csproj", "{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SseMath", "SseMath\SseMath.csproj", "{40E13172-AF8E-4CB1-BACC-234B10A904C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5C4D9AB-D3B4-434A-84D7-D2F01E506082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40E13172-AF8E-4CB1-BACC-234B10A904C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40E13172-AF8E-4CB1-BACC-234B10A904C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40E13172-AF8E-4CB1-BACC-234B10A904C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40E13172-AF8E-4CB1-BACC-234B10A904C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
