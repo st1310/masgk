@@ -103,7 +103,7 @@ namespace masgk
             Console.WriteLine($"Rendering:         {timer2.Elapsed.TotalMilliseconds} ms");
             Console.WriteLine($"Buffer saving:     {timer3.Elapsed.TotalMilliseconds} ms");
 
-            MathTest();
+            //MathTest();
         }
 
         public static void MathTest()

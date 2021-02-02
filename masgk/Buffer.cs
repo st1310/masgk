@@ -65,9 +65,9 @@ namespace masgk
         {
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
-                    {
-                        SetPixel(i, j, col);
-                    }
+                {
+                    SetPixel(i, j, col);
+                }
         }
 
         public void Save(string filename)
