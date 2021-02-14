@@ -28,7 +28,12 @@ namespace masgk
         public static Float3 operator *(Float3 a, Float3 b) => new Float3(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
         public static Float3 operator *(Float3 a, float b) => new Float3(a.X * b, a.Y * b, a.Z * b);
         public static Float3 operator /(Float3 a, Float3 b) => new Float3(a.X / b.X, a.Y / b.Y, a.Z / b.Z);
-        public static Float3 operator /(Float3 a, float b) => b == 0 ? throw new DivideByZeroException() : new Float3(a.X / b, a.Y / b, a.Z / b);
+        public static Float3 operator /(Float3 a, float b)
+        {
+            float d = 1f / b;
+
+            return a * d;
+        }
 
         // Conversion operators 
         public static explicit operator Color(Float3 a) => Color.FromArgb((int)a.X, (int)a.Y, (int)a.Z);

@@ -94,7 +94,8 @@ namespace masgk
 
         public void DrawUV(ref Rasterizer rast, ref VertexProcessor proc, ref Light light, ref Buffer tex)
         {
-            for (int i = 0; i < Indices.Count; i += 3) //! make Indices.Count a variable
+            int count = Indices.Count;
+            for (int i = 0; i < count; i += 3) //! make Indices.Count a variable
             {
                 rast.Triangle(
                 proc.Tr(Positions[Indices[i]]),

@@ -32,7 +32,12 @@ namespace masgk
         public static Float4 operator *(Float4 a, Float4 b) => new Float4(a.X * b.X, a.Y * b.Y, a.Z * b.Z, a.W * b.W);
         public static Float4 operator /(Float4 a, Float4 b) => new Float4(a.X / b.X, a.Y / b.Y, a.Z / b.Z, a.W / b.W);
         public static Float4 operator *(Float4 a, float b) => new Float4(a.X * b, a.Y * b, a.Z * b, a.W * b);
-        public static Float4 operator /(Float4 a, float b) => b == 0 ? throw new DivideByZeroException() : new Float4(a.X / b, a.Y / b, a.Z / b, a.W / b);
+        public static Float4 operator /(Float4 a, float b)
+        {
+            float d = 1f / b;
+
+            return a * d;
+        }
 
         public static Float4 operator *(Float4x4 a, Float4 b) =>
             new Float4
